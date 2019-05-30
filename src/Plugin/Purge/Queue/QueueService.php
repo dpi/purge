@@ -126,6 +126,10 @@ class QueueService extends ServiceBase implements QueueServiceInterface, Destruc
    * {@inheritdoc}
    */
   public function claim($claims = NULL, $lease_time = NULL) {
+    if (count($this->buffer) == 0) {
+      return [];
+    }
+
     $this->commitAdding();
     $this->commitReleasing();
     $this->commitDeleting();

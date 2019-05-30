@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Install, update and uninstall functions for the purge_processor_lateruntime module.
+ */
+
+/**
+ * Installs new configuration.
+ */
+function purge_processor_lateruntime_update_8001() {
+  \Drupal::configFactory()->getEditable('purge_processor_lateruntime.settings')
+    ->set('always_check_queue', TRUE)
+    ->save(TRUE);
+}

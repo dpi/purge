@@ -39,6 +39,13 @@ class LateRuntimeProcessor implements EventSubscriberInterface, ContainerAwareIn
   protected $purgeQueue;
 
   /**
+   * The configuration factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * {@inheritdoc}
    */
   static function getSubscribedEvents() {
@@ -60,6 +67,7 @@ class LateRuntimeProcessor implements EventSubscriberInterface, ContainerAwareIn
       if ($this->processor !== FALSE) {
         $this->purgePurgers = $this->container->get('purge.purgers');
         $this->purgeQueue = $this->container->get('purge.queue');
+        $this->configFactory = $this->container->get('config.factory');
       }
     }
     return $this->processor !== FALSE;
@@ -77,6 +85,12 @@ class LateRuntimeProcessor implements EventSubscriberInterface, ContainerAwareIn
 
     // Immediately stop if our plugin is disabled.
     if (!$this->initialize()) {
+      return;
+    }
+
+    //  Only claim if invalidations were added during this requests.
+    $claims = $this->purgeQueue->claim();
+    if (count($claims) === 0 && !$this->configFactory->get('purge_processor_lateruntime.settings')->get('always_check_queue')) {
       return;
     }
 
