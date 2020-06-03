@@ -1,7 +1,7 @@
-name: Purge Drush
+core_version_requirement: '^8.8.6 || ^9.0.0'
+name: 'Purge Drush'
 type: module
 description: 'Administrative Drush commands for Purge.'
 package: Purge
-core: 8.x
 dependencies:
   - purge:purge

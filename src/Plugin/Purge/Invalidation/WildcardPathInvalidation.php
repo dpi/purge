@@ -26,7 +26,7 @@ class WildcardPathInvalidation extends PathInvalidation implements InvalidationI
     $this->wildCardCheck = FALSE;
     parent::validateExpression();
     if (strpos($this->expression, '*') === FALSE) {
-      throw new InvalidExpressionException($this->t('Wildcard invalidations should contain an asterisk.'));
+      throw new InvalidExpressionException('Wildcard invalidations should contain an asterisk.');
     }
   }
 
